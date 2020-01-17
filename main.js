@@ -4,13 +4,20 @@ let currOperator = '';
 let displayCurr = document.getElementById('display-curr');
 let displayPrev = document.getElementById('display-prev');
 
-const numContainer = document.getElementById('numbtn-container');
-numContainer.addEventListener('click', e => {
-    addToCurrNum(e.target.innerHTML);
-});
+const numButtons = document.querySelectorAll('.num-btn');
+const opButtons = document.querySelectorAll('.op-btn');
 
-const operatorContainer = document.getElementById('opbtn-container');
-operatorContainer.addEventListener('click', e => operatorClicked(e));    
+displayCurr.textContent = '0';
+
+numButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        addToCurrNum(button.innerHTML);
+    });
+})
+
+opButtons.forEach(button => {
+    button.addEventListener('click', e => operatorClicked(e)); 
+})
 
 const clearBtn = document.getElementById('clear-btn');
 clearBtn.addEventListener('click', clearAll);
@@ -23,8 +30,8 @@ equalsBtn.addEventListener('click', equals)
 
 operate = (num1S, num2S, operator) => {
     let result;
-    let num1 = parseInt(num1S);
-    let num2 = parseInt(num2S);
+    let num1 = parseFloat(num1S);
+    let num2 = parseFloat(num2S);
 
     if (operator === '+') { 
         result = add(num1, num2); 
@@ -57,12 +64,11 @@ function addToCurrNum(number) {
 function operatorClicked(event) {
     if (currOperator === '') {
         prevNum = currNum;
-        currNum = '';
-        displayCurr.textContent = '';
-
         let operator = event.target.innerHTML;
         currOperator = operator;
         displayPrevNum(operator);
+
+        currNum = '';
         displayCurrNum();
     }
     else {
@@ -111,6 +117,7 @@ function displayCurrNum() {
 }
 
 function displayPrevNum(operator) {
+    displayCurr.textContent = '0';
     displayPrev.textContent += (prevNum + ' ' + operator);
 }
 
